@@ -24,6 +24,18 @@ class GroupCardController {
     return response.json({ groupCard })
 
   }
+
+  async destroy(request, response) {
+    const data = request.params
+
+    const groupCard = await GroupCard.findOne({ _id: data.groupId })
+
+    const title = groupCard.title
+
+    await groupCard.delete()
+
+    return response.json({ message: `${title} deleted` })
+  }
 }
 
 module.exports = new GroupCardController()

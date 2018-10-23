@@ -16,6 +16,7 @@ class GroupCardController {
 
     const newGroup = new GroupCard({
       title: data.title,
+      tasks: [],
     })
 
     const groupCard = await newGroup.save()

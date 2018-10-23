@@ -9,6 +9,7 @@ const passport = require('passport')
 
 const authRoutes = require('./routes/auth')
 const usersRoutes = require('./routes/users')
+const groupCardRoutes = require('./routes/groupCard')
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.use(passport.initialize())
 
 app.use('/', authRoutes)
 app.use('/', usersRoutes)
+app.use('/', groupCardRoutes)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

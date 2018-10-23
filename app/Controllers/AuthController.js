@@ -10,8 +10,10 @@ class AuthController {
   async login(request, response) {
     const [err, data] = await validate(request.body, LoginValidator)
     if (err) return response.status(401).json(err)
+
     const user = await User.findOne({ email: data.email })
     const token = jwt.sign(user, config.secret)
+
     return response.json({ token })
   }
 

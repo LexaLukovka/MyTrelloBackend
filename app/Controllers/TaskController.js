@@ -22,7 +22,25 @@ class TaskController {
       { upsert: true, },
     )
 
-    return response.json({ groupCard })
+    return response.json({ groupCard, task })
+  }
+
+  async update(request, response) {
+    const data = request.body
+
+    const task = await Task.findOneAndUpdate(
+      { _id: data.taskId },
+      { task: data.task },
+      { upsert: true, },
+    )
+console.log(task)
+    const groupCard = await GroupCard.findOneAndUpdate(
+      { _id: data.groupId, },
+      { tasks: task },
+      { upsert: true, },
+    )
+console.log(groupCard)
+    return response.json({groupCard, task })
   }
 }
 

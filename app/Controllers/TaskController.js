@@ -57,6 +57,34 @@ class TaskController {
 
     return response.json({ groupCard, task })
   }
+
+  async destroy(request, response) {
+    const data = request.params
+    const taskId = data.taskId
+    const groupId = data.groupId
+
+    const task = await Task.findOne({ _id: taskId })
+
+    const title = task.task
+
+    await task.delete()
+
+    const groupCards = await GroupCard.findOne({ _id: groupId })
+    const tasks = []
+    groupCards.tasks.map(function add(task) {
+      if (task._id != taskId) {
+        tasks.push(task)
+      }
+    })
+
+    await GroupCard.findOneAndUpdate(
+      { _id: groupId },
+      { tasks },
+      { upsert: true, },
+    )
+
+    return response.json({ message:  `Task ${title} deleted` })
+  }
 }
 
 module.exports = new TaskController()

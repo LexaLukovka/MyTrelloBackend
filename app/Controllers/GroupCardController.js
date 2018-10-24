@@ -34,7 +34,7 @@ class GroupCardController {
 
     await groupCard.delete()
 
-    return response.json({ message: `${title} deleted` })
+    return response.json({ message: `Group card ${title} deleted` })
   }
 }
 

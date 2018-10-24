@@ -32,8 +32,9 @@ class TaskController {
     const taskId = data.taskId
     const groupId = data.groupId
 
-    const taskOld = await Task.findOne({ _id: taskId })
+    debugger
 
+    const taskOld = await Task.findOne({ _id: taskId })
     const task = data.task || taskOld.task
     const description = data.description || taskOld.description
     const dueDates = data.dueDates || taskOld.dueDates
@@ -58,7 +59,7 @@ class TaskController {
         taska.dueDates = dueDates
         tasks.push(taska)
       }
-      else tasks.push(task)
+      else tasks.push(taska)
     })
 
     await GroupCard.findOneAndUpdate(

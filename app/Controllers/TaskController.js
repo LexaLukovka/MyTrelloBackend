@@ -27,20 +27,35 @@ class TaskController {
 
   async update(request, response) {
     const data = request.body
+    const taskId = data.taskId
+    const groupId = data.groupId
 
-    const task = await Task.findOneAndUpdate(
-      { _id: data.taskId },
+    await Task.findOneAndUpdate(
+      { _id: taskId },
       { task: data.task },
       { upsert: true, },
     )
-console.log(task)
-    const groupCard = await GroupCard.findOneAndUpdate(
-      { _id: data.groupId, },
-      { tasks: task },
+    const task = await Task.findOne({ _id: taskId })
+
+    const groupCards = await GroupCard.findOne({ _id: groupId })
+    const tasks = []
+    groupCards.tasks.map(function add(task) {
+      if (task._id == taskId) {
+        task.task = data.task
+        tasks.push(task)
+      }
+      else tasks.push(task)
+    })
+
+    await GroupCard.findOneAndUpdate(
+      { _id: groupId },
+      { tasks },
       { upsert: true, },
     )
-console.log(groupCard)
-    return response.json({groupCard, task })
+
+    const groupCard = await GroupCard.findOne({ _id: groupId })
+
+    return response.json({ groupCard, task })
   }
 }
 

@@ -34,7 +34,7 @@ class TaskController {
 
     const taskOld = await Task.findOne({ _id: taskId })
 
-    const task = data.task || taskOld.description
+    const task = data.task || taskOld.task
     const description = data.description || taskOld.description
     const dueDates = data.dueDates || taskOld.dueDates
 

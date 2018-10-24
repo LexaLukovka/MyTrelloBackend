@@ -5,9 +5,16 @@ const Schema = mongoose.Schema
 const TaskSchema = new Schema({
   task: {
     type: String,
-    required: true
+    required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  dueDates: {
+    type: String,
+    required: false,
   },
 })
-
 
 module.exports = mongoose.model('Task', TaskSchema)

@@ -7,6 +7,8 @@ class TaskController {
 
     const newTask = new Task({
       task: data.task,
+      description: '',
+      dueDates: '',
     })
 
     const task = await newTask.save()
@@ -30,19 +32,31 @@ class TaskController {
     const taskId = data.taskId
     const groupId = data.groupId
 
+    const taskOld = await Task.findOne({ _id: taskId })
+
+    const task = data.task || taskOld.description
+    const description = data.description || taskOld.description
+    const dueDates = data.dueDates || taskOld.dueDates
+
     await Task.findOneAndUpdate(
       { _id: taskId },
-      { task: data.task },
+      {
+        task,
+        description,
+        dueDates,
+      },
       { upsert: true, },
     )
-    const task = await Task.findOne({ _id: taskId })
 
     const groupCards = await GroupCard.findOne({ _id: groupId })
+
     const tasks = []
-    groupCards.tasks.map(function add(task) {
-      if (task._id == taskId) {
-        task.task = data.task
-        tasks.push(task)
+    groupCards.tasks.map(function add(taska) {
+      if (taska._id == taskId) {
+        taska.task = task
+        taska.description = description
+        taska.dueDates = dueDates
+        tasks.push(taska)
       }
       else tasks.push(task)
     })
@@ -83,7 +97,7 @@ class TaskController {
       { upsert: true, },
     )
 
-    return response.json({ message:  `Task ${title} deleted` })
+    return response.json({ message: `Task ${title} deleted` })
   }
 }
 

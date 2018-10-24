@@ -29,12 +29,12 @@ class TaskController {
 
   async update(request, response) {
     const data = request.body
+
     const taskId = data.taskId
     const groupId = data.groupId
 
-    debugger
-
     const taskOld = await Task.findOne({ _id: taskId })
+
     const task = data.task || taskOld.task
     const description = data.description || taskOld.description
     const dueDates = data.dueDates || taskOld.dueDates

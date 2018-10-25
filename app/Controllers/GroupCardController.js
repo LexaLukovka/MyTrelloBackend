@@ -25,6 +25,41 @@ class GroupCardController {
 
   }
 
+  async update(request, response) {
+    const data = request.body
+
+    const start = data.start
+    const finish = data.finish || null
+
+    let startId = ''
+    let finishId = ''
+    let startTasks = []
+    let finishTasks = []
+
+    startId = start._id
+    startTasks = start.tasks
+
+    if (finish) {
+      finishId = finish._id
+      finishTasks = finish.tasks
+    }
+
+    await GroupCard.findOneAndUpdate(
+      { _id: startId },
+      { tasks: startTasks },
+      { upsert: true, },
+    )
+    finish && await GroupCard.findOneAndUpdate(
+      { _id: finishId },
+      { tasks: finishTasks },
+      { upsert: true, },
+    )
+
+    const groupCard = await GroupCard.find()
+
+    return response.json({ groupCard })
+  }
+
   async destroy(request, response) {
     const data = request.params
 

@@ -30,6 +30,30 @@ class GroupCardController {
 
     const start = data.start
     const finish = data.finish || null
+    const newGroupCard = data.newGroupCard || null
+
+    if (newGroupCard) {
+
+      // const prob = await GroupCard.update({}, newGroupCard, { multi: true })
+      // console.log(prob)
+
+      const prob = await newGroupCard.forEach(async function add(groups) {
+        await GroupCard.findOneAndUpdate(
+          { _id: groups._id },
+          {
+            _id: groups._id,
+            tasks: groups.tasks,
+            title: groups.title,
+          },
+          { multi: true }
+        )
+      })
+      console.log(prob)
+      const groupCard = await GroupCard.find()
+      console.log(groupCard)
+
+      return response.json({ groupCard })
+    }
 
     let startId = ''
     let finishId = ''

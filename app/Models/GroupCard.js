@@ -13,5 +13,4 @@ const GroupCardSchema = new Schema({
   },
 })
 
-
 module.exports = mongoose.model('GroupCard', GroupCardSchema)

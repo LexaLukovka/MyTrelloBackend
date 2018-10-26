@@ -14,7 +14,12 @@ class GroupCardController {
     const [err, data] = await validate(request.body, GroupCardValidator)
     if (err) return response.status(401).json(err)
 
+    const group = await GroupCard.find()
+    const length = group.length
+    console.log(length)
+
     const newGroup = new GroupCard({
+      index: length,
       title: data.title,
       tasks: [],
     })
@@ -28,6 +33,23 @@ class GroupCardController {
   async update(request, response) {
     const data = request.body
 
+    const groupId = data.groupId
+    const title = data.title
+
+    await GroupCard.findOneAndUpdate(
+      { _id: groupId },
+      { title },
+      { upsert: true, },
+    )
+
+    const groupCard = await GroupCard.find()
+
+    return response.json({ groupCard })
+  }
+
+  async save(request, response) {
+    const data = request.body
+
     const start = data.start
     const finish = data.finish || null
     const newGroupCard = data.newGroupCard || null
@@ -37,22 +59,23 @@ class GroupCardController {
       // const prob = await GroupCard.update({}, newGroupCard, { multi: true })
       // console.log(prob)
 
-      const prob = await newGroupCard.forEach(async function add(groups) {
-        await GroupCard.findOneAndUpdate(
-          { _id: groups._id },
-          {
-            _id: groups._id,
-            tasks: groups.tasks,
-            title: groups.title,
-          },
-          { multi: true }
-        )
-      })
-      console.log(prob)
-      const groupCard = await GroupCard.find()
-      console.log(groupCard)
-
-      return response.json({ groupCard })
+      // const prob = await newGroupCard.forEach(async function add(groups) {
+      //   await GroupCard.findOneAndUpdate(
+      //     { _id: groups._id },
+      //     {
+      //       _id: groups._id,
+      //       tasks: groups.tasks,
+      //       title: groups.title,
+      //     },
+      //     { multi: true }
+      //   )
+      // })
+      // console.log(prob)
+      // const groupCard = await GroupCard.find()
+      // console.log(groupCard)
+      //
+      // return response.json({ groupCard })
+      return
     }
 
     let startId = ''

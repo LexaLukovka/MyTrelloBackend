@@ -24,9 +24,9 @@ class GroupCardController {
       tasks: [],
     })
 
-    const groupCard = await newGroup.save()
+    await newGroup.save()
 
-    return response.json({ groupCard })
+    return response.json(`${data.title} created`)
 
   }
 
@@ -116,7 +116,7 @@ class GroupCardController {
 
     await groupCard.delete()
 
-    return response.json({ message: `Group card ${title} deleted` })
+    return response.json(`Group card ${title} deleted`)
   }
 }
 

@@ -15,6 +15,10 @@ const TaskSchema = new Schema({
     type: String,
     required: false,
   },
+  pictures: {
+    type: Array,
+    required: false,
+  },
 })
 
 module.exports = mongoose.model('Task', TaskSchema)

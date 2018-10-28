@@ -36,7 +36,7 @@ class AuthController {
 
   async facebook(request, response) {
     const data = request.body
-console.log(data)
+
     const userDetails = new User({
       name: data.name,
       email: data.email,

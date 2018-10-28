@@ -9,6 +9,7 @@ class TaskController {
       task: data.task,
       description: '',
       dueDates: '',
+      pictures: [],
     })
 
     const task = await newTask.save()
@@ -24,7 +25,7 @@ class TaskController {
       { upsert: true, },
     )
 
-    return response.json({ groupCard, task })
+    return response.json({ groupCard })
   }
 
   async update(request, response) {
@@ -37,6 +38,9 @@ class TaskController {
     const task = data.task || taskOld.task
     const description = data.description === undefined ?  taskOld.description : data.description
     const dueDates = data.dueDates === undefined ? taskOld.dueDates : data.dueDates
+    const pictures = data.pictures === undefined ? taskOld.pictures : data.pictures
+
+console.log(pictures)
 
     await Task.findOneAndUpdate(
       { _id: taskId },
@@ -44,6 +48,7 @@ class TaskController {
         task,
         description,
         dueDates,
+        pictures,
       },
       { upsert: true, },
     )
@@ -56,6 +61,7 @@ class TaskController {
         taska.task = task
         taska.description = description
         taska.dueDates = dueDates
+        taska.pictures = pictures
         tasks.push(taska)
       }
       else tasks.push(taska)
@@ -69,7 +75,7 @@ class TaskController {
 
     const groupCard = await GroupCard.findOne({ _id: groupId })
 
-    return response.json({ groupCard, task })
+    return response.json({ groupCard })
   }
 
   async destroy(request, response) {

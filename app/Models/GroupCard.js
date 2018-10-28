@@ -3,6 +3,10 @@ const db = require('../../database/connect')
 const Schema = mongoose.Schema
 
 const GroupCardSchema = new Schema({
+  index: {
+    type: Number,
+    required: true,
+  },
   title: {
     type: String,
     required: true
@@ -12,6 +16,5 @@ const GroupCardSchema = new Schema({
     required: true,
   },
 })
-
 
 module.exports = mongoose.model('GroupCard', GroupCardSchema)

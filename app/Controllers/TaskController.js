@@ -34,10 +34,9 @@ class TaskController {
     const groupId = data.groupId
 
     const taskOld = await Task.findOne({ _id: taskId })
-
     const task = data.task || taskOld.task
-    const description = data.description || taskOld.description
-    const dueDates = data.dueDates || taskOld.dueDates
+    const description = data.description === undefined ?  taskOld.description : data.description
+    const dueDates = data.dueDates === undefined ? taskOld.dueDates : data.dueDates
 
     await Task.findOneAndUpdate(
       { _id: taskId },
